@@ -67,22 +67,28 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space") {
-        event.preventDefault();
-        jumpHeld = true;
+function isJumpKey(code) {
+    return code === "Space" || code === "ArrowUp";
+}
 
-        if (!character.jumping) {
-            character.jumping = true;
-            character.velocityY = jumpForce;
-            character.velocityX = 0;
-            jumpTime = 0;
-        }
+document.addEventListener("keydown", (event) => {
+    if (!isJumpKey(event.code)) {
+        return;
+    }
+
+    event.preventDefault();
+    jumpHeld = true;
+
+    if (!character.jumping) {
+        character.jumping = true;
+        character.velocityY = jumpForce;
+        character.velocityX = 0;
+        jumpTime = 0;
     }
 });
 
-document.addEventListener("keyup", (e) => {
-    if (e.code === "Space") {
+document.addEventListener("keyup", (event) => {
+    if (isJumpKey(event.code)) {
         jumpHeld = false;
     }
 });
