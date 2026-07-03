@@ -13,7 +13,7 @@ const character = {
 }
 
 const gravity = 0.5;
-const jumpForce = -10;
+const jumpForce = -12;
 const ground = canvas.height - character.height;
 let jumpHeld = false;
 let jumpTime = 0;
