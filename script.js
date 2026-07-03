@@ -11,6 +11,10 @@ const character = {
     jumping: false,
 }
 
+const gravity = 0.5;
+const jumpForce = -10;
+const ground = canvs.height - character.height;
+
 function drawCharacter() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
