@@ -2,6 +2,7 @@
     --bg: #0d1117;
     --panel: #161b22;
     --accent: #e3b341;
+    --danger: #ff5f56;
     --text: #e6edf3;
     --muted: #6e7681;
     --font-mono: 'JetBrains Mono', 'Space Mono', 'Courier New', monospace;
@@ -25,8 +26,8 @@ body{
 }
 
 .frame{
-    width: 820px;
-    max-width: 100%;
+    width: min(100vw - 32px, 1200px);
+    max-width: calc(100vw - 32px);
     display: flex;
     flex-direction: column;
 }
@@ -71,11 +72,13 @@ main.game-shell{
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #262c35;
+    min-width: min(800px, calc(100vw - 32px));
 }
 
 canvas{
     display: block;
     width: 100%;
+    min-width: min(800px, calc(100vw - 32px));
     background: #0f141b;
 }
 
