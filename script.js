@@ -36,4 +36,17 @@ function drawCharacter() {
     requestAnimationFrame(drawCharacter);
 }
 
-drawCharacter();
+function gameLoop() {
+    updateCharacter();
+    drawCharacter();
+    requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space" && !character.jumping) {
+        character.velocityY = jumpForce;
+        character.jumping = true;
+    }
+});
+
+gameLoop();
