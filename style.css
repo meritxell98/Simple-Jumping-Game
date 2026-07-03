@@ -127,3 +127,11 @@ button:focus-visible{
     outline: 2px solid var(--accent-2);
     outline-offset: 2px;
 }
+
+footer{
+    margin-top: 12px;
+    text-align:center;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+}
