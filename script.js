@@ -13,10 +13,10 @@ const character = {
 
 const gravity = 0.5;
 const jumpForce = -10;
-const ground = canvs.height - character.height;
+const ground = canvas.height - character.height;
 
 function updateCharacter() {
-    characther.velocityY += gravity;
+    character.velocityY += gravity;
     character.y += character.velocityY;
 
     if (character.y > ground) {
