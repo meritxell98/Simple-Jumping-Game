@@ -15,6 +15,18 @@ const gravity = 0.5;
 const jumpForce = -10;
 const ground = canvs.height - character.height;
 
+function updateCharacter() {
+    characther.velocityY += gravity;
+    character.y += character.velocityY;
+
+    if (character.y > ground) {
+        character.y = ground;
+        character.velocityY = 0;
+        character.jumping = false;
+    }
+}
+
+
 function drawCharacter() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
