@@ -17,6 +17,7 @@ const jumpForce = -10;
 const ground = canvas.height - character.height;
 let jumpHeld = false;
 let jumpTime = 0;
+let isLayingDown = false;
 const maxJumpTime = 15;const baseRunSpeed = 2.4;
 const horizontalBoost = 0.22;
 const holdToMoveX = 6;
@@ -58,7 +59,16 @@ function drawCharacter() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "red";
-    ctx.fillRect(character.x, character.y, character.width, character.height);
+
+    if (isLayingDown) {
+        ctx.save();
+        ctx.translate(character.x + character.width / 2, character.y + character.height - character.width / 2);
+        ctx.rotate(Math.PI / 2);
+        ctx.fillRect(-character.width / 2, -character.height / 2, character.width, character.height);
+        ctx.restore();
+    } else {
+        ctx.fillRect(character.x, character.y, character.width, character.height);
+    }
 }
 
 function gameLoop() {
@@ -72,6 +82,12 @@ function isJumpKey(code) {
 }
 
 document.addEventListener("keydown", (event) => {
+    if (event.code === "ArrowDown") {
+        event.preventDefault();
+        isLayingDown = true;
+        return;
+    }
+
     if (!isJumpKey(event.code)) {
         return;
     }
@@ -88,6 +104,11 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("keyup", (event) => {
+    if (event.code === "ArrowDown") {
+        isLayingDown = false;
+        return;
+    }
+
     if (isJumpKey(event.code)) {
         jumpHeld = false;
     }
