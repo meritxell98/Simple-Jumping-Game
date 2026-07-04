@@ -1,17 +1,9 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const overlay = document.getElementById("overlay");
-const ground = 280;
-const minCanvasWidth = 800;
-
-function resizeCanvas() {
-    const width = Math.max(window.innerWidth - 32, minCanvasWidth);
-    canvas.width = width;
-    canvas.height = 280;
-}
-
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+const scoreElement = document.getElementById("score");
+const highscoreElement = document.getElementById("highscore");
+const highscoreStorageKey = "simple-jumping-game-highscore";
+const ground = canvas.height - 20;
 
 const character = {
     x: 50,
@@ -30,6 +22,8 @@ let jumpHeld = false;
 let jumpTime = 0;
 let isLayingDown = false;
 let isGameOver = false;
+let score = 0;
+let highscore = 0;
 const maxJumpTime = 15;const baseRunSpeed = 2.4;
 const horizontalBoost = 0.22;
 const holdToMoveX = 6;
@@ -118,6 +112,39 @@ function updateObstacles() {
     }
 }
 
+function updateHud() {
+    scoreElement.textContent = String(score).padStart(6, "0");
+    highscoreElement.textContent = String(highscore).padStart(6, "0");
+}
+
+function increaseScore() {
+    if (isGameOver) {
+        return;
+    }
+
+    score += 1;
+    highscore = Math.max(score, highscore);
+
+    try {
+        localStorage.setItem(highscoreStorageKey, String(highscore));
+    } catch (error) {
+        console.warn("Unable to save high score", error);
+    }
+
+    updateHud();
+}
+
+function loadHighscore() {
+    try {
+        const storedHighscore = Number(localStorage.getItem(highscoreStorageKey) || 0);
+        highscore = Math.max(storedHighscore, highscore);
+    } catch (error) {
+        console.warn("Unable to load high score", error);
+    }
+
+    updateHud();
+}
+
 function updateCharacter() {
     if (isGameOver) {
         return;
@@ -191,8 +218,10 @@ function resetGame() {
     jumpTime = 0;
     isLayingDown = false;
     isGameOver = false;
+    score = 0;
     obstacles.length = 0;
     obstacleSpawnCount = 0;
+    updateHud();
     updateOverlay();
     gameLoop();
 }
@@ -259,4 +288,6 @@ document.addEventListener("keyup", (event) => {
     }
 });
 
+loadHighscore();
+setInterval(increaseScore, 1000);
 gameLoop();
