@@ -4,6 +4,7 @@ const scoreElement = document.getElementById("score");
 const highscoreElement = document.getElementById("highscore");
 const highscoreStorageKey = "simple-jumping-game-highscore";
 const ground = canvas.height - 20;
+const startX = 50;
 
 const character = {
     x: 50,
@@ -24,10 +25,12 @@ let isLayingDown = false;
 let isGameOver = false;
 let score = 0;
 let highscore = 0;
-const maxJumpTime = 15;const baseRunSpeed = 2.4;
+const maxJumpTime = 15;
+const baseRunSpeed = 2.4;
 const horizontalBoost = 0.22;
 const holdToMoveX = 6;
 const maxHorizontalVelocity = 3.2;
+const returnToStartStrength = 0.05
 const obstacles = [];
 const minObstacleWidth = 20;
 const maxObstacleWidth = 50;
@@ -162,15 +165,11 @@ function updateCharacter() {
 
     character.velocityY += gravity;
     character.velocityX *= 0.95;
-    character.x += baseRunSpeed + character.velocityX;
+    character.x += character.velocityX;
+    character.x += (startX - character.x) * returnToStartStrength;
+ 
     character.y += character.velocityY;
-
-    if (character.x + character.width < 0) {
-        character.x = canvas.width;
-    } else if (character.x > canvas.width) {
-        character.x = -character.width;
-    }
-
+ 
     if (character.y + character.height > ground) {
         character.y = ground - character.height;
         character.velocityY = 0;
